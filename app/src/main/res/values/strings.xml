@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Comptador</string>
+    <string name="textview">TextView</string>
+    <string name="button">Button</string>
+    <string name="touchme">Tocam</string>
+    <string name="timeText">Temps disponible: %1$d</string>
 </resources>
