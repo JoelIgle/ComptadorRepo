@@ -97,16 +97,38 @@ class MainActivity : ComponentActivity() {
 
     private fun endGame() {
         // Mostra un AlertDialog al acabar el temps, amb la puntuació
-        alertDialog = AlertDialog.Builder(this)
-            .setTitle("Temps acabat!")
-            .setMessage("Has fet $counter punts")
-            .setCancelable(false)
-            .setPositiveButton("Tancar") { dialog, _ ->
-                dialog.dismiss()
-                resetGame()
-            }
-            .create()
-
+        // Depém de la puntuació que faigue mostrarà un missatge o un altre
+        if (counter < 10) {
+            alertDialog = AlertDialog.Builder(this)
+                .setTitle("Temps acabat,")
+                .setMessage("Has fet $counter punts són molt pocs, millora")
+                .setCancelable(false)
+                .setPositiveButton("Tancar") { dialog, _ ->
+                    dialog.dismiss()
+                    resetGame()
+                }
+                .create()
+        }else if (counter < 20) {
+            alertDialog = AlertDialog.Builder(this)
+                .setTitle("Temps acabat!")
+                .setMessage("Has fet $counter punts, està bé però podries fer més")
+                .setCancelable(false)
+                .setPositiveButton("Tancar") { dialog, _ ->
+                    dialog.dismiss()
+                    resetGame()
+                }
+                .create()
+        }else {
+            alertDialog = AlertDialog.Builder(this)
+                .setTitle("Temps acabat")
+                .setMessage("Has fet $counter punts, són molts, increible")
+                .setCancelable(false)
+                .setPositiveButton("Tancar") { dialog, _ ->
+                    dialog.dismiss()
+                    resetGame()
+                }
+                .create()
+        }
         alertDialog?.show()
 
 //        Toast.makeText(this, getString(R.string.endGame, counter), Toast.LENGTH_LONG).show()
