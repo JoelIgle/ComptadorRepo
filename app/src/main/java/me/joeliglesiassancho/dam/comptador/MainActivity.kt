@@ -1,56 +1,75 @@
 package me.joeliglesiassancho.dam.comptador
 
-import android.content.IntentSender.OnFinished
+import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.icu.text.IDNA.Info
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.view.animation.AnimationUtils
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import me.joeliglesiassancho.dam.comptador.ui.theme.ComptadorTheme
 
 class MainActivity : ComponentActivity() {
-    // Variables
-    internal lateinit var tapMeButton : Button
-    internal lateinit var timeTextView : TextView
-    internal lateinit var counterTextView : TextView
-    // Inicialitzem comptador i el temps
+    private val INITIAL_TIME = 5
+
+    private val TAG = MainActivity::class.java.simpleName
+
+    private var alertDialog: AlertDialog? = null
+
+
+    internal lateinit var tapMeButton: Button
+    internal lateinit var timeTextView: TextView
+    internal lateinit var counterTextView: TextView
     internal var counter = 0
-    internal var time = 60
-    // Aquesta variable determina quan s'inicia, es a dir al primer click, per a començar a baixar el temps
+    internal var time = 5
     internal var appStarted = false
-    internal lateinit var countdownTimer : CountDownTimer
-    internal val initialCountDownTimer: Long = 60000 // 60 sec
+    internal lateinit var countdownTimer: CountDownTimer
+    internal val initialCountDownTimer: Long = time.toLong() * 1000 // 60 sec
     internal val intervalCountDownTimer: Long = 1000 // 1 sec
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        initCountdown()
 
         tapMeButton = findViewById(R.id.tapMeButton)
         timeTextView = findViewById(R.id.timeTextView)
         counterTextView = findViewById(R.id.counterTextView)
 
-//      Aixó és per a mostrar el comptador de clicks
+        // Aquest és el botó de informació
+        val infoButton = findViewById<ImageButton>(R.id.infoButton)
+        infoButton.setOnClickListener {
+            val dialog = AlertDialog.Builder(this)
+                .setTitle("Informació")
+                .setMessage("Aquesta aplicació android ha estat feta per Joel Iglesias Sancho")
+                .setPositiveButton("Tancar") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .create()
 
-        tapMeButton.setOnClickListener{
-            if (!appStarted){
+            dialog.show()
+        }
+        tapMeButton.setOnClickListener {
+            if (!appStarted) {
                 startGame()
-
             }
             incrementCounter()
+            // Carga la animació d'esquerra a dreta quan toques
+            val moveLeftRight = AnimationUtils.loadAnimation(this, R.anim.move_left_right)
+            val moveRightLeft = AnimationUtils.loadAnimation(this, R.anim.move_right_left)
+
+            // Aquí la aplica
+            tapMeButton.startAnimation(moveLeftRight)
+            tapMeButton.startAnimation(moveRightLeft)
+
         }
-//        Aixó és per a mostrar el temps disponible
-          timeTextView.text = getString(R.string.timeText, time)
+
+        timeTextView.text = getString(R.string.timeText, time)
+        counterTextView.text = getString(R.string.puntsText, counter)
+
+        initCountdown()
     }
 
     private fun startGame() {
@@ -59,10 +78,10 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun initCountdown() {
-        countdownTimer = object : CountDownTimer(initialCountDownTimer,intervalCountDownTimer) {
+        countdownTimer = object : CountDownTimer(initialCountDownTimer, intervalCountDownTimer) {
             override fun onTick(millisUntilFinished: Long) {
                 val timeLeft = millisUntilFinished / 1000
-                timeTextView.text = timeLeft.toString()
+                timeTextView.text = getString(R.string.timeText,timeLeft) //Abans simplement posaba el temps, sense text
             }
 
             override fun onFinish() {
@@ -71,19 +90,39 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-//    Aquesta funció fa que s'incremente el comptador a cada click
     private fun incrementCounter() {
         counter += 1
-        counterTextView.text = counter.toString()
+        counterTextView.text = getString(R.string.puntsText, counter) //Abans solament posaba el número de punts, ara amb text
     }
 
     private fun endGame() {
-        Toast.makeText(this,getString(R.string.endGame), Toast.LENGTH_LONG).show()
+        // Mostra un AlertDialog al acabar el temps, amb la puntuació
+        alertDialog = AlertDialog.Builder(this)
+            .setTitle("Temps acabat!")
+            .setMessage("Has fet $counter punts")
+            .setCancelable(false)
+            .setPositiveButton("Tancar") { dialog, _ ->
+                dialog.dismiss()
+                resetGame()
+            }
+            .create()
+
+        alertDialog?.show()
+
+//        Toast.makeText(this, getString(R.string.endGame, counter), Toast.LENGTH_LONG).show()
+
 //        resetGame()
     }
 
-    private fun resetGame(){
+    private fun resetGame() {
+        counter = 0
+        counterTextView = findViewById(R.id.counterTextView)
+        time = INITIAL_TIME
+        timeTextView.text = getString(R.string.timeText,time) //Abans simplement posaba el temps, sense text
 
+        initCountdown()
+        appStarted = false
     }
 }
+
 

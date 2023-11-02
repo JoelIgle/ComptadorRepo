@@ -4,5 +4,6 @@
     <string name="button">Button</string>
     <string name="touchme">Tocam</string>
     <string name="timeText">Temps disponible: %1$d</string>
-    <string name="endGame">Temps Acabat!</string>
+    <string name="endGame">Temps Acabat! Puntuació %1$d</string>
+    <string name="puntsText">Punts: %1$d</string>
 </resources>
