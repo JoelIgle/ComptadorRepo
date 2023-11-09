@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Comptador" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.Comptador" parent="android:Theme.Material.Light.NoActionBar" /><!-- Si vull posar la action bar, trec el .NoActionBar-->
+
+    <style name="AlertDialogCustomStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/blue</item>
+        <!-- Otros atributos de estilo, si es necesario -->
+
+    </style>
+
 </resources>

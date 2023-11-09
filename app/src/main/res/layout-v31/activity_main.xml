@@ -5,7 +5,7 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D0E4EA"> <!-- Fondo gris claro -->
+    android:background="#D0E4EA"> <!-- Fondo gris clar -->
 
     <Button
         android:id="@+id/tapMeButton"
@@ -20,17 +20,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/android"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!--És la imatge de fons-->
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/android"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="249dp"
         android:layout_height="53dp"
         android:background="#86BCE6"
@@ -54,7 +55,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="166dp"
+        android:layout_width="243dp"
         android:layout_height="53dp"
         android:background="#86BCE6"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,14 +74,30 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageButton
-        android:id="@+id/infoButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/info"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@android:color/transparent"
-        tools:ignore="MissingConstraints" />
+<!--        És el botó de info-->
+        <ImageButton
+            android:id="@+id/infoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/info"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@android:color/transparent"
+            tools:ignore="MissingConstraints" />
+
+<!--    <pl.droidsonroids.gif.GifImageView-->
+<!--        android:id="@+id/backgroundImageView"-->
+
+<!--        android:layout_width="67dp"-->
+<!--        android:layout_height="94dp"-->
+<!--        android:background="@android:color/transparent"-->
+<!--        android:scaleType="centerCrop"-->
+<!--        android:src="@drawable/info2"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.016"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="1.0" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

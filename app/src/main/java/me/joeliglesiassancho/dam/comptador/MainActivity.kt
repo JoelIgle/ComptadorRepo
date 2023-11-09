@@ -2,34 +2,36 @@ package me.joeliglesiassancho.dam.comptador
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.icu.text.IDNA.Info
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.core.content.ContextCompat
+
 
 class MainActivity : ComponentActivity() {
-    private val INITIAL_TIME = 5
+    private val initialTime = 5
 
-    private val TAG = MainActivity::class.java.simpleName
+//    private val TAG = MainActivity::class.java.simpleName
 
     private var alertDialog: AlertDialog? = null
 
 
-    internal lateinit var tapMeButton: Button
+    private lateinit var tapMeButton: Button
     internal lateinit var timeTextView: TextView
-    internal lateinit var counterTextView: TextView
-    internal var counter = 0
-    internal var time = 5
-    internal var appStarted = false
-    internal lateinit var countdownTimer: CountDownTimer
+    private lateinit var counterTextView: TextView
+    private var counter = 0
+    private var time = 5
+    private var appStarted = false
+    private lateinit var countdownTimer: CountDownTimer
     internal val initialCountDownTimer: Long = time.toLong() * 1000 // 60 sec
     internal val intervalCountDownTimer: Long = 1000 // 1 sec
 
+    @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -41,16 +43,43 @@ class MainActivity : ComponentActivity() {
         // Aquest és el botó de informació
         val infoButton = findViewById<ImageButton>(R.id.infoButton)
         infoButton.setOnClickListener {
-            val dialog = AlertDialog.Builder(this)
-                .setTitle("Informació")
-                .setMessage("Aquesta aplicació android ha estat feta per Joel Iglesias Sancho")
+            val builder = AlertDialog.Builder(this, R.style.AlertDialogCustomStyle)
+
+            // Personaliza el estilo del AlertDialog
+//            val dialogStyle = R.style.AlertDialogCustomStyle
+            val title = "Informació"
+            val message = "Aquesta aplicació Android ha estat feta per Joel Iglesias Sancho"
+
+            // Configura el diálogo con estilo, título y mensaje
+            builder.setTitle(title)
+                .setMessage(message)
                 .setPositiveButton("Tancar") { dialog, _ ->
                     dialog.dismiss()
                 }
-                .create()
+//            MOU LE GIF
+//            val backgroundImageView: GifImageView = findViewById(R.id.backgroundImageView)
 
+            // Aplica el estilo personalizado
+            builder.create()
+            val dialog = builder.create()
+
+            // Mostrar el diálogo
             dialog.show()
+
+            // Personaliza el estilo del botón "Tancar"
+            val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            // Aqui canvio el color del botor tancar de info
+            positiveButton.setTextColor(ContextCompat.getColor(this, R.color.black))
+
+            // Cambia el color de fondo del diálogo utilizando un color definido en colors.xml
+            val backgroundColor = ContextCompat.getColor(this, R.color.blue)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(backgroundColor))
+//
+//            // Cargar el GIF en la ImageView
+//            Glide.with(this).load(R.drawable.info2).into(backgroundImageView)
+
         }
+
         tapMeButton.setOnClickListener {
             if (!appStarted) {
                 startGame()
@@ -81,7 +110,10 @@ class MainActivity : ComponentActivity() {
         countdownTimer = object : CountDownTimer(initialCountDownTimer, intervalCountDownTimer) {
             override fun onTick(millisUntilFinished: Long) {
                 val timeLeft = millisUntilFinished / 1000
-                timeTextView.text = getString(R.string.timeText,timeLeft) //Abans simplement posaba el temps, sense text
+                timeTextView.text = getString(
+                    R.string.timeText,
+                    timeLeft
+                ) //Abans simplement posaba el temps, sense text
             }
 
             override fun onFinish() {
@@ -92,7 +124,10 @@ class MainActivity : ComponentActivity() {
 
     private fun incrementCounter() {
         counter += 1
-        counterTextView.text = getString(R.string.puntsText, counter) //Abans solament posaba el número de punts, ara amb text
+        counterTextView.text = getString(
+            R.string.puntsText,
+            counter
+        ) //Abans solament posaba el número de punts, ara amb text
     }
 
     private fun endGame() {
@@ -108,7 +143,7 @@ class MainActivity : ComponentActivity() {
                     resetGame()
                 }
                 .create()
-        }else if (counter < 20) {
+        } else if (counter < 20) {
             alertDialog = AlertDialog.Builder(this)
                 .setTitle("Temps acabat!")
                 .setMessage("Has fet $counter punts, està bé però podries fer més")
@@ -118,7 +153,7 @@ class MainActivity : ComponentActivity() {
                     resetGame()
                 }
                 .create()
-        }else {
+        } else {
             alertDialog = AlertDialog.Builder(this)
                 .setTitle("Temps acabat")
                 .setMessage("Has fet $counter punts, són molts, increible")
@@ -139,8 +174,9 @@ class MainActivity : ComponentActivity() {
     private fun resetGame() {
         counter = 0
         counterTextView = findViewById(R.id.counterTextView)
-        time = INITIAL_TIME
-        timeTextView.text = getString(R.string.timeText,time) //Abans simplement posaba el temps, sense text
+        time = initialTime
+        timeTextView.text =
+            getString(R.string.timeText, time) //Abans simplement posaba el temps, sense text
 
         initCountdown()
         appStarted = false
